@@ -25,7 +25,12 @@ sendFileQueue = []
 
 
 def startClient():
-    not_registered, email, password = loginView.Dialog().show()
+    if not config.testmode:
+        not_registered, email, password = loginView.Dialog().show()
+    else:
+        not_registered = False
+        email = config.testemail
+        password = config.testpass
     if not_registered:
         name, surname = registerView.Dialog().show()
         register(email, password, name, surname)
@@ -145,14 +150,17 @@ def takeFirstFileAndSend():
 
 
 def sendFileToApi(filename):
-    global token
+    global token, sendFileQueue
     with open(filename, 'rb') as rec:
         response = requests.post(
             config.apiUrl + "/recordings/new_recording",
-            {'recording': rec, 'timestamp': getTimeFromFilename(filename)},
-            headers={'x_access_token': token})
+            params={'timestamp': getTimeFromFilename(filename)},
+            files={'recording': rec},
+            headers={'x-access-token': token})
     if response.status_code == 200: #TODO if unauthorized login again
         deleteRecording(filename)
+    else:
+        sendFileQueue.append(filename)
 
 
 def getTimeFromFilename(filename):
