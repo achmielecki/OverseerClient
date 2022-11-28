@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from PIL import Image
 
 
 class Dialog(object):
@@ -7,19 +8,20 @@ class Dialog(object):
         self.toplevel = tk.Tk()
         self.toplevel.title("Overseer Client")
         self.toplevel.geometry("300x300")
+        self.toplevel.wm_iconphoto(False, tk.PhotoImage(file='icon.png'))
         self.toplevel.configure(bg='black')
         self.toplevel.configure(background="black")
         self.text = Label(self.toplevel, text="Please login", background="black", fg="white")
         self.textemail = Label(self.toplevel, text="email", background="black", fg="white")
         self.textpass = Label(self.toplevel, text="password", background="black", fg="white")
         self.inputtxt = Entry(self.toplevel,
-                                       width=30,
-                                       bg="light yellow"
-                                       )
-        self.inputtxtpass = Entry(self.toplevel,
                               width=30,
                               bg="light yellow"
                               )
+        self.inputtxtpass = Entry(self.toplevel,
+                                  width=30,
+                                  bg="light yellow"
+                                  )
         self.buttonlogin = tk.Button(self.toplevel, text="LOGIN", command=self.close)
         self.buttonregister = tk.Button(self.toplevel, text="REGISTER", command=self.register)
 

@@ -7,6 +7,8 @@ import threading
 import datetime
 import requests
 import json
+from PIL import Image
+import pystray
 
 import config
 from views import loginView, registerView
@@ -157,7 +159,7 @@ def sendFileToApi(filename):
             params={'timestamp': getTimeFromFilename(filename)},
             files={'recording': rec},
             headers={'x-access-token': token})
-    if response.status_code == 200: #TODO if unauthorized login again
+    if response.status_code == 200:
         deleteRecording(filename)
     else:
         sendFileQueue.append(filename)
@@ -172,6 +174,10 @@ def deleteRecording(filename):
     print(f"file deleted: {filename}")
 
 
+image = Image.open("icon.png")
+icon = pystray.Icon("Overseer", image, "Overseer is Active")
+z = threading.Thread(target=icon.run)
+z.start()
 token = startClient()
 threads = []
 x = threading.Thread(target=awaitCalls)

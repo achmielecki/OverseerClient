@@ -6,6 +6,7 @@ class Dialog(object):
     def __init__(self):
         self.toplevel = tk.Tk()
         self.toplevel.title("Overseer Client")
+        self.toplevel.wm_iconphoto(False, tk.PhotoImage(file='icon.png'))
         self.toplevel.geometry("300x200")
         self.toplevel.configure(bg='black')
         self.toplevel.configure(background="black")
